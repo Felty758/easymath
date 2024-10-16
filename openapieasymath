@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  title: API de Resolución de Problemas Matemáticos con GPT
+  version: 1.0.0
+  description: API para resolver problemas matemáticos utilizando un modelo GPT.
+servers:
+  - url: https://api.tu-dominio.com/v1
+
+paths:
+  /solve:
+    post:
+      summary: Envía un problema matemático y recibe la solución
+      operationId: solveProblem
+      requestBody:
+        description: El problema matemático a resolver
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - problem
+              properties:
+                problem:
+                  type: string
+                  description: El enunciado del problema matemático.
+                  example: "¿Cuál es la derivada de x^3?"
+                show_steps:
+                  type: boolean
+                  description: Indica si se deben mostrar los pasos de la solución.
+                  default: false
+      responses:
+        '200':
+          description: Solución exitosa del problema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  solution:
+                    type: string
+                    description: La respuesta al problema matemático.
+                    example: "La derivada de x^3 es 3x^2."
+                  steps:
+                    type: string
+                    description: >
+                      Los pasos detallados para llegar a la solución. Este campo es opcional y solo se incluye si `show_steps` es verdadero.
+                    example: |
+                      1. Aplicar la regla de la potencia.
+                      2. La derivada de xⁿ es n * x^(n - 1).
+                      3. Por lo tanto, la derivada de x³ es 3 * x^(3 - 1) = 3x².
+        '400':
+          description: Error en la solicitud
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Descripción del error.
+                    example: "El campo 'problem' no puede estar vacío."
